@@ -1,0 +1,19 @@
+-- 相关pod的重启
+kubectl scale deployment scheduler  -n ebaymag --replicas=0
+kubectl scale deployment scheduler  -n ebaymag --replicas=1
+kubectl scale deployment sidekiq  -n ebaymag --replicas=0
+kubectl scale deployment sidekiq  -n ebaymag --replicas=1
+kubectl scale deployment sidekiq-important  -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-important  -n ebaymag --replicas=1
+kubectl scale deployment sidekiq-publish-jp  -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-publish-jp  -n ebaymag --replicas=1
+kubectl scale deployment sidekiq-publish-retry  -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-publish-retry  -n ebaymag --replicas=1
+kubectl scale deployment ebay-webhooks -n ebaymag --replicas=0
+kubectl scale deployment ebay-webhooks -n ebaymag --replicas=1
+kubectl scale deployment asyncproxy -n ebaymag --replicas=0
+kubectl scale deployment asyncproxy -n ebaymag --replicas=30
+kubectl scale deployment sidekiq-jp -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-jp -n ebaymag --replicas=10
+kubectl scale deployment sidekiq-others -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-others -n ebaymag --replicas=10
