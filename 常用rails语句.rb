@@ -18,6 +18,7 @@ Preparation.call(Listing.find_by_id(l))
 # 发布
 Publishing::SynchronizeItem.call(Listing.find_by_id(l))
 Publishing.synchronize(Listing.find_by_id(l))
+Publishing.refresh(Listing.find_by_id(l))
 
 # 获取category
 Preparation::SuggestCategories.call(Listing.find_by_id(l),limit: 1,auto_select: true,)
@@ -29,7 +30,6 @@ Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
 # id为shipping_ebay_profile的id
 Shipping::PublishEbayProfile.call(record:Shipping::EbayProfile.find_by_id(id))
 Shipping::PublishEbayProfile.call(record:Listing.find_by_id(l).ebay_profile('fulfillment'))
-
 
 item = Ebay::GetItem.call(Listing.find_by_id(l).account, Listing.find_by_id(l).site_id, [Listing.find_by_id(l).item_id])
 
@@ -115,6 +115,7 @@ psql $DATABASE_URL
 #查询某个listing相关信息
 l = 706768170
 Listing.find_by_id(l).source.listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:created_at,:updated_at,:start_time,:end_time,:publication_url)
+Product.find_by_id(id).listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:created_at,:updated_at,:start_time,:end_time,:publication_url)
 
 # 通过ebaymag页面上的ebaymag number差order
 Parcel.find_by_id(id).orders
