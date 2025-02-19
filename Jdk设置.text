@@ -1,0 +1,5 @@
+In self service request ADMIN permission and run the below 2 commands
+
+1. sudo spctl --master-disable.
+(or)
+2. sudo xattr -dr com.apple.quarantine <wherever-you-installed-the-jdk>

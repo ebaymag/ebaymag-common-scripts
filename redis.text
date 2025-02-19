@@ -1,0 +1,11 @@
+rfr-redis-app-1 是master
+rfr-redis-app-2 是slave
+rfr-redis-app-0 是slave
+
+rfr-redis-mutex-1 是master
+rfr-redis-mutex-0 是slave
+rfr-redis-mutex-2 是slave
+
+rfr-redis-i18n-2 是master
+rfr-redis-i18n-0 是slave
+rfr-redis-i18n-1 是slave

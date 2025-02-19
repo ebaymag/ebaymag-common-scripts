@@ -1,0 +1,23 @@
+-- 查询所有的application
+select * from ACCESS_VIEWS.DW_APPLICATIONS where app_id=1;
+-- 查询修改记录
+select * from ACCESS_VIEWS.DW_ITEM_REVISIONS where item_id=404718567660;
+
+
+-- 打成json
+CREATE TABLE P_CMP_T.emag_jp_json_data_cross_error (
+                                                       json_data VARCHAR(10000)
+);
+
+INSERT INTO P_CMP_T.emag_jp_json_data_cross_error (json_data)
+SELECT to_json(collect_list(named_struct(
+        'item_id', item_id,
+        'user_id', user_id,
+        'source_id', source_id
+                            ))) AS json_data
+FROM (
+         SELECT item_id, user_id, source_id,
+                ROW_NUMBER() OVER (ORDER BY item_id) as rn
+         FROM P_CMP_T.emag_jp_org_listings_with_cross_error
+     ) AS numbered_rows
+GROUP BY FLOOR((rn - 1) / 100);
