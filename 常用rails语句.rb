@@ -9,6 +9,7 @@ EbayAPI.logger = Rails.logger
 Account.find_by_name('zhuhjshanghai')
 Account.find_by_name('jiangyi12081')
 
+# 用户生成用户的token
 Ebay::Account::GetSubscription.call(Account.find_by_name(name))
 Ebay::Account::GetSubscription.call(Account.find_by_id(17))
 
@@ -24,6 +25,8 @@ Publishing.refresh(Listing.find_by_id(l))
 Preparation::SuggestCategories.call(Listing.find_by_id(l),limit: 1,auto_select: true,)
 # 更新original
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_id(l),sync_quantities: true,sync_content: true,**{},)
+Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(l),sync_quantities: true,sync_content: true,**{},)
+
 
 Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
 
@@ -35,6 +38,10 @@ item = Ebay::GetItem.call(Listing.find_by_id(l).account, Listing.find_by_id(l).s
 
 # 获取policy
 BusinessPolicies.get(account: account, site_id: site_id, ebay_id: ebay_id, kind: kind,)
+# 刷新original
+Publishing::RefreshOriginalItemsWorker.new.perform(l)
+# 刷新daily end check
+Publishing::DailyToEndCrossListingsWorker.enqueue
 
 Ebaymagapi::SetItemFieldLock.call(Product.find_by_id(id))
 Ebaymagapi::SetItemMapping.call(Product.find_by_id(id))
@@ -80,6 +87,7 @@ Sidekiq::Queue.new("_cleaning").pause;
 Sidekiq::Queue.new("_retry_worker").pause;
 Sidekiq::Queue.new("_retry_worker").unpause;
 Sidekiq::Queue.new("_events_fast").pause;
+Sidekiq::Queue.new("_events_fast").unpause;
 Sidekiq::Queue.new("google_analytics").unpause;
 Sidekiq::Queue.new("google_analytics").pause;
 Sidekiq::Queue.new("_events_ebaymagapi").unpause;
@@ -90,6 +98,7 @@ Sidekiq::Queue.new("manual_publishing").pause;
 Sidekiq::Queue.new("manual_publishing").unpause;
 Sidekiq::Queue.new("events_ended").pause;
 Sidekiq::Queue.new("events_ended").unpause;
+Sidekiq::Queue.new("mailing").pause;
 
 # 队列暂停一段时间
 Sidekiq::Queue["_cleaning"].pause_for_ms(1000 * 60 * 30) # for 30 minutes

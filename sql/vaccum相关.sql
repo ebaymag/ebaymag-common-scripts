@@ -63,6 +63,7 @@ select * from (
 -- where time>'00:30:00'
 order by time desc;
 
+
 SELECT pg_terminate_backend(pid);
 
 

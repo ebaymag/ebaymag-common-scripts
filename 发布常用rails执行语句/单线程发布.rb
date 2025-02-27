@@ -3,7 +3,7 @@ Publishing::ManualPublishItemSingleWorker.enqueue(name)
 
 # 日本卖家发送
 Account.where(country:'JP').find_by_name(name).user.listings.selected.managed.not_published.warnings_or_without_problems.limit(10000).each do |listing| Publishing::JapanPublishWorker.perform_async(listing.user_id,listing[:id]) end
-
+# 查询有多少pending的数量
 Account.find_by_name(name).user.listings.selected.managed.not_published.warnings_or_without_problems.size
 
 
