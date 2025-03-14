@@ -9,6 +9,7 @@ select * from event_store_messages where kind='itemRevised' order by original_ti
 select * from event_store_messages where kind='itemEnded' order by original_time desc limit 20;
 -- 获取feedback
 select * from event_store_messages where kind='feedbackCreated' order by original_time desc limit 20;
+select * from event_store_messages where kind='inventoryChanged' order by original_time desc limit 20;
 
 select * from event_store_messages where kind='itemAffected' order by original_time desc limit 10;
 

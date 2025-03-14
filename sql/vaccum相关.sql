@@ -63,6 +63,15 @@ select * from (
 -- where time>'00:30:00'
 order by time desc;
 
+select pg_terminate_backend(pid) from(
+                  SELECT pid,now()-backend_start as time,usename,datname,client_addr,state,query,backend_start
+                  FROM
+                      pg_stat_activity
+                  WHERE
+                      state = 'active'
+              )a
+where time>'00:30:00';
+
 
 SELECT pg_terminate_backend(pid);
 

@@ -25,3 +25,4 @@ FROM (
          FROM P_CMP_T.emag_jp_org_listings_with_cross_error
      ) AS numbered_rows
 GROUP BY FLOOR((rn - 1) / 100);
+

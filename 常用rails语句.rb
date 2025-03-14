@@ -27,6 +27,9 @@ Preparation::SuggestCategories.call(Listing.find_by_id(l),limit: 1,auto_select: 
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_id(l),sync_quantities: true,sync_content: true,**{},)
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(l),sync_quantities: true,sync_content: true,**{},)
 
+# 导入某个item
+ProductImport::Load.call(item_id:326475502843, site_ids: [0], account:  Account.find_by_id(17), data_source: "from_ebay",)
+
 
 Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
 
@@ -54,6 +57,13 @@ EventStore::HandleWorker.enqueue(Notifications::ItemEndHandler)
 EventStore::HandleWorker.enqueue(Stock::ItemClosureHandler)
 EventStore::HandleWorker.enqueue(Stock::ArchivationHandler)
 EventStore::HandleWorker.enqueue(Publishing::UnselectionHandler)
+# internal
+EventStore::HandleWorker.enqueue(Ebaymagapi::SetItemMappingHandler)
+EventStore::HandleWorker.enqueue(Ebaymagapi::DeleteItemMappingHandler)
+EventStore::HandleWorker.enqueue(Ebaymagapi::DropSellerSettingHandler)
+EventStore::HandleWorker.enqueue(Ebaymagapi::ErrorListingHandler)
+EventStore::HandleWorker.enqueue(Ebaymagapi::SetItemFieldLockHandler)
+EventStore::HandleWorker.enqueue(Ebaymagapi::SetSellerSettingHandler)
 
 # 清除schedule重复job
 name = "schedule"
@@ -99,6 +109,9 @@ Sidekiq::Queue.new("manual_publishing").unpause;
 Sidekiq::Queue.new("events_ended").pause;
 Sidekiq::Queue.new("events_ended").unpause;
 Sidekiq::Queue.new("mailing").pause;
+Sidekiq::Queue.new("snapshots").pause;
+Sidekiq::Queue.new("inventory_others_main").pause;
+
 
 # 队列暂停一段时间
 Sidekiq::Queue["_cleaning"].pause_for_ms(1000 * 60 * 30) # for 30 minutes
@@ -110,13 +123,6 @@ RedisMutex.new(key).unlock!(force:true)
 # 删除account
 Account::Drop.call(account)
 
-# 导入某个item
-ProductImport::Load.call(
-  item_id:  225591800266,
-  site_ids: [0],
-  account:  Account.find_by_id(17),
-  data_source: "from_ebay",
-  )
 
 # 连接数据库
 psql $DATABASE_URL
@@ -125,6 +131,8 @@ psql $DATABASE_URL
 l = 706768170
 Listing.find_by_id(l).source.listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:created_at,:updated_at,:start_time,:end_time,:publication_url)
 Product.find_by_id(id).listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:created_at,:updated_at,:start_time,:end_time,:publication_url)
+
+Product.find_by_id(id).listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:updated_at,:start_time,:end_time,)
 
 # 通过ebaymag页面上的ebaymag number差order
 Parcel.find_by_id(id).orders
@@ -152,7 +160,9 @@ EventStore::HandleWorker.new.perform(uuid,handler)
 EventStore::HandleWorker.enqueue(Order::FetchHandler);
 EventStore::HandleWorker.enqueue(Notifications::ItemRevisedHandler);
 EventStore::HandleWorker.enqueue(Notifications::ItemEndHandler);
-EventStore::HandleWorker.enqueue(Notifications::ItemEndHandler);
+EventStore::HandleWorker.enqueue(Stock::ArchivationHandler);
+EventStore::HandleWorker.enqueue(Stock::ItemClosureHandler);
+EventStore::HandleWorker.enqueue(Publishing::UnselectionHandler);
 
 # 获取opted in用户
 Account.with_business_shipping.size
