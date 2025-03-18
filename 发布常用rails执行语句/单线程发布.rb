@@ -6,6 +6,10 @@ Account.where(country:'JP').find_by_name(name).user.listings.selected.managed.no
 # 查询有多少pending的数量
 Account.find_by_name(name).user.listings.selected.managed.not_published.warnings_or_without_problems.size
 
+# 手动推送前10卖家
+[127217, 127218, 161935, 168372, 138809, 171451, 171514, 162041, 140473, 137814, 162189, 154883, 133793, 174512, 127178, 161604, 136906, 171913, 161144, 162652, 172694, 162562, 130791, 127219, 171009, 137680].each do |usr_id|
+
+end
 
 # 只发布没有error的
 name=''
