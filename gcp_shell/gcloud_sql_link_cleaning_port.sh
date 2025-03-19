@@ -13,4 +13,4 @@ else
   echo "已杀掉使用端口5434的进程：$pid。"
 fi
 
-/Users/yanmeng/Documents/google-cloud-sdk/bin/cloud_sql_proxy -instances=ebay-mag:europe-west4:data-cleaning=tcp:5435
+/Users/yanmeng/Documents/google-cloud-sdk/bin/cloud_sql_proxy -instances=ebay-mag:europe-west1:data-cleaning=tcp:5435
