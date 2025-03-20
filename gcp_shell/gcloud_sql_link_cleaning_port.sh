@@ -14,3 +14,5 @@ else
 fi
 
 /Users/yanmeng/Documents/google-cloud-sdk/bin/cloud_sql_proxy -instances=ebay-mag:europe-west1:data-cleaning=tcp:5435
+#如果上面的不行，可以用下面的命令
+#/Users/yanmeng/Documents/google-cloud-sdk/bin/cloud_sql_proxy ebay-mag:europe-west1:data-cleaning -p 5435
