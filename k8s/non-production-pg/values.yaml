@@ -1,0 +1,42 @@
+pgbouncer:
+  databases:
+    async_proxy_db:
+      auth_user: postgres
+      dbname: async_proxy
+      host: asyncproxy-postgresql
+  enabled: true
+  exporter:
+    serviceMonitor:
+      enabled: true
+  pgbouncer:
+    default_pool_size: 1080
+    max_client_conn: 3000
+    max_db_connections: 1700
+    pool_mode: transaction
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 800m
+      memory: 800Mi
+  tolerations:
+    - effect: NoSchedule
+      key: pgbouncer-only-node
+      operator: Equal
+      value: "true"
+  users:
+    - name: postgres
+      password: postgres
+    - name: pgbouncer
+      password: pgbouncer
+postgresql:
+  enabled: true
+  image:
+    tag: 13.1.0
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+  persistence:
+    storageClass: 'ssd'
+
