@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ebaymag
+      component: debezium-server
+  template:
+    metadata:
+      labels:
+        app: ebaymag
+        component: debezium-server
+    spec:
+      containers:
+        - name: debezium-server
+          image: "debezium/server:3.0.0.Final"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /debezium/config
+            - name: data-volume
+              mountPath: /debezium/data
+          envFrom:
+            - configMapRef:
+                name: debezium-config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: debezium-config
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: debezium-pvc
+
+

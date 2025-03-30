@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: debezium-config
+data:
+  application.properties: |-
+    # Debezium Server configuration
+    debezium.sink.type=http
+    debezium.sink.http.url={{ $.Values.debezium.sink.http.url }}
+    debezium.sink.http.timeout.ms={{ $.Values.debezium.sink.http.timeout | int }}
+    debezium.sink.http.retries={{ $.Values.debezium.sink.http.retries | int }}
+    debezium.sink.http.retry.interval.ms={{ $.Values.debezium.sink.http.interval | int }}
+    
+    debezium.format.value=json
+    debezium.source.plugin.name=pgoutput
+    debezium.source.connector.class=io.debezium.connector.postgresql.PostgresConnector
+    debezium.source.offset.storage.file.filename={{ $.Values.debezium.source.offset.storage.file.filename }}
+    debezium.source.offset.flush.interval.ms=0
+    debezium.source.database.hostname={{ $.Values.debezium.source.database.hostname }}
+    debezium.source.database.port={{ $.Values.debezium.source.database.port | int }}
+    debezium.source.database.user={{ $.Values.debezium.source.database.user }}
+    debezium.source.database.password={{ $.Values.debezium.source.database.password }}
+    debezium.source.database.dbname={{ $.Values.debezium.source.database.dbname }}
+    debezium.source.topic.prefix=cdc
+    debezium.source.table.include.list={{ $.Values.debezium.source.table.include }}
+    quarkus.log.console.json=false

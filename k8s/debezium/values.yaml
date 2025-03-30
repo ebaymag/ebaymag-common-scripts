@@ -1,0 +1,21 @@
+debezium:
+  sink:
+    http:
+      url: https://api.ebay.com/ebaymagapi/v1/send_message/cdc
+      timeout: 5000
+      retries: 5
+      interval: 1000
+  source:
+    offset:
+      storage:
+        file:
+          filename: /debezium-server/data/offsets.dat
+    database:
+      hostname: 10.17.1.3
+      dbname: postgres
+      port: 5432
+      user: cdc
+      password: cdc
+    table:
+      include: public.proxy_requests
+
