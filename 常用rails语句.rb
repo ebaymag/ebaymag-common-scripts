@@ -28,7 +28,7 @@ Stock::Sync::UpdateItem.call(listing: Listing.find_by_id(l),sync_quantities: tru
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(l),sync_quantities: true,sync_content: true,**{},)
 
 # 导入某个item
-ProductImport::Load.call(item_id:326475502843, site_ids: [0], account:  Account.find_by_id(17), data_source: "from_ebay",)
+ProductImport::Load.call(item_id:256871029657, site_ids: [3], account:  Account.find_by_id(3946), data_source: "from_ebay",)
 
 
 Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
