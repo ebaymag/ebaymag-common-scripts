@@ -6,7 +6,7 @@ select * from ACCESS_VIEWS.DW_ITEM_REVISIONS where item_id=404718567660;
 select user_id
 from ACCESS_VIEWS.DW_USERS
 where
-    user_id='2335028565'
+-- user_id='2335028565'
 USER_SLCTD_ID='no.2ebikestore' ;
 
 -- 打成json
