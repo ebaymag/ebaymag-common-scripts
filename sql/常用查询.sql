@@ -17,3 +17,11 @@ select * from event_store_messages where kind <> 'marketplaceAccountDeletion' or
 
 select * from event_store_messages where kind in ('gpsr::ReviseListingByGpsrTemplate','gpsr::CoverOriginal','gpsr::AssignTemplate','gpsr::CoverCross') order by original_time desc limit 20;
 
+-- 查询某个删除用户
+SELECT *
+FROM action_logs
+WHERE EXISTS (
+    SELECT 1
+    FROM jsonb_array_elements(data->'accounts') AS account
+    WHERE account->>1 = 'dj_sage_store'
+);
