@@ -2,16 +2,18 @@
 ProductImport::Prepare.call(Account.find_by_name(name).user.product_import) if Account.find_by_name(name).user.product_import
 Account.find_by_name(name).user.product_import.items.each do |item| ProductImport::Process.call(item)  end
 
+Account::ExtInfo.find_by(account_id:Account.find_by_name(name).id)
+
 # 可以用下面的脚本来帮卖家批量导入商品
 #下面的数组是 item_id
 site_id = 0
 account = Account.find_by_name(name)
 [1,2,3].each do |item_id|
   ::ProductImport::Load.call(
-    item_id: item_id,
-    site_ids: [site_id],
-    account: account,
+    item_id: "205395991029",
+    site_ids: [0],
+    account: Account.find_by_name("kt7450"),
     data_source: "from_ebay",
-    original_site_id: site_id || account.site_id,
+    original_site_id: 0,
     )
 end

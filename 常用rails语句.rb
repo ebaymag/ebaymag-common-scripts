@@ -25,10 +25,10 @@ Publishing.refresh(Listing.find_by_id(l))
 Preparation::SuggestCategories.call(Listing.find_by_id(l),limit: 1,auto_select: true,)
 # 更新original
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_id(l),sync_quantities: true,sync_content: true,**{},)
-Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(l),sync_quantities: true,sync_content: true,**{},)
+Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(326142842634),sync_quantities: true,sync_content: true,**{},)
 
 # 导入某个item
-ProductImport::Load.call(item_id:256871029657, site_ids: [3], account:  Account.find_by_id(3946), data_source: "from_ebay",)
+ProductImport::Load.call(item_id:326142842634, site_ids: [0], account:  Account.find_by_name('zhuhjshanghai'), data_source: "from_ebay",)
 
 
 Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
@@ -111,14 +111,23 @@ Sidekiq::Queue.new("events_ended").unpause;
 Sidekiq::Queue.new("mailing").pause;
 Sidekiq::Queue.new("snapshots").pause;
 Sidekiq::Queue.new("inventory_others_main").pause;
+Sidekiq::Queue.new("0_events_important").pause;
+Sidekiq::Queue.new("_events_ebaymagapi_item_mapping").pause;
+Sidekiq::Queue.new("_events_ebaymagapi_item_mapping").unpause;
+Sidekiq::Queue.new("op_his_publishing").pause;
+Sidekiq::Queue.new("op_his_publishing_user").pause;
+Sidekiq::Queue.new("op_ecm_publishing").pause;
+Sidekiq::Queue.new("op_ecm_publishing_user").pause;
+Sidekiq::Queue.new("op_others_publishing").pause;
+Sidekiq::Queue.new("op_others_publishing_user").pause;
 
 
 # 队列暂停一段时间
 Sidekiq::Queue["_cleaning"].pause_for_ms(1000 * 60 * 30) # for 30 minutes
 
 #分布式锁的删除
-RedisMutex.new('Product[700468]').unlock!(force:true)
-RedisMutex.new(key).unlock!(force:true)
+RedisMutex.new('Product[4160,148214]').unlock!(force:true)
+RedisMutex.new('Product[4160,148214]').lock!(force:true)
 
 # 删除account
 Account::Drop.call(account)
@@ -211,7 +220,7 @@ kpi_jobs = retry_queue.select { |job| job.item["class"] == 'Category::UnbindWork
 kpi_jobs.each(&:delete)
 
 # 开始ebay translation api白名单，MY 是国家
-Redis::Pool.with do |r| r.lpush('translation_country_white_list','MY') end
+Redis::Pool.with do |r| r.lpush('translation_country_white_list','CN') end
 Redis::Pool.with do |r| r.lrange('translation_country_white_list',0,-1) end
 # 关闭ebay translation api白名单
 Redis::Pool.with do |r| r.lrem('translation_country_white_list',1,'CN') end
@@ -300,6 +309,15 @@ Redis::Pool.with do |r| r.lrange('publish_pending_listings_white_list',0,-1) end
 # 关闭 推送 listing白名单
 Redis::Pool.with do |r| r.lrem('publish_pending_listings_white_list',1,'zhuhjshanghai') end
 
+# 发布无锁 user 白名单: 1234 是 user_id
+Redis::Pool.with do |r| r.lpush('publish_without_lock_user_white_list',1234) end
+Redis::Pool.with do |r| r.lrange('publish_without_lock_user_white_list',0,-1) end
+# 发布无锁 user白名单
+Redis::Pool.with do |r| r.lrem('publish_without_lock_user_white_list',1,1234) end
 
-
+# 发布无锁 country 白名单: CN 是 国家
+Redis::Pool.with do |r| r.lpush('publish_without_lock_country_white_list','CN') end
+Redis::Pool.with do |r| r.lrange('publish_without_lock_country_white_list',0,-1) end
+# 发布无锁 country 白名单
+Redis::Pool.with do |r| r.lrem('publish_without_lock_country_white_list',1,'CN') end
 
