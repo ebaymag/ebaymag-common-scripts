@@ -6,7 +6,7 @@ kafka:
   logRetentionBytes: _103741824002
   maxMessageBytes: _10485760
   socketRequestMaxBytes: _104857600
-  defaultReplicationFactor: 1
+  defaultReplicationFactor: 2
   numPartitions: 3
 
 kafka-ui:
