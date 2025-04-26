@@ -1,0 +1,25 @@
+kafka:
+  replicaCount: 5
+  global:
+    storageClass: "ssd"
+  heapOpts: -Xms4096m -Xmx4096m
+  logRetentionBytes: _103741824002
+  maxMessageBytes: _10485760
+  defaultReplicationFactor: 1
+  numPartitions: 3
+  config: |-
+    socket.request.max.bytes: _104857600
+    replica.fetch.max.bytes: _12582912
+
+kafka-ui:
+  yamlApplicationConfig:
+    kafka:
+      clusters:
+        - name: debezium
+          bootstrapServers: kafka:9092
+    auth:
+      type: disabled
+    management:
+      health:
+        ldap:
+          enabled: false
