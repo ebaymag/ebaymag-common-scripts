@@ -5,11 +5,9 @@ kafka:
   heapOpts: -Xms4096m -Xmx4096m
   logRetentionBytes: _103741824002
   maxMessageBytes: _10485760
+  socketRequestMaxBytes: _104857600
   defaultReplicationFactor: 1
   numPartitions: 3
-  config: |-
-    socket.request.max.bytes: _104857600
-    replica.fetch.max.bytes: _12582912
 
 kafka-ui:
   yamlApplicationConfig:
