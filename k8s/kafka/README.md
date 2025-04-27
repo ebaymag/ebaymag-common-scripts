@@ -11,14 +11,14 @@ curl -X POST http://34.32.138.63:8083/connectors -H "Content-Type: application/j
     "database.port": "5432",
     "database.user": "cdc",
     "database.password": "cdc",
-    "snapshot.mode": "initial",
+    "snapshot.mode": "never",
     "database.dbname": "ebaymag_production",
     "database.server.name": "debezium.pgsql",
-    "slot.name": "debezium_slot",
+    "slot.name": "debezium_slot_v1",
     "plugin.name": "pgoutput",
     "tasks.max": "10",
     "topic.prefix": "debezium.pgsql",
-    "table.include.list": "public.accounts",
+    "schema.include.list": "public",
     "producer.override.max.request.size": "10485760",
     "producer.override.buffer.memory": "12485760"
   }
@@ -33,14 +33,14 @@ curl -X PUT http://34.32.138.63:8083/connectors/pgsql-connector/config -H "Conte
     "database.port": "5432",
     "database.user": "cdc",
     "database.password": "cdc",
-    "snapshot.mode": "initial",
+    "snapshot.mode": "never",
     "database.dbname": "ebaymag_production",
     "database.server.name": "debezium.pgsql",
-    "slot.name": "debezium_slot",
+    "slot.name": "debezium_slot_v1",
     "plugin.name": "pgoutput",
     "tasks.max": "10",
     "topic.prefix": "debezium.pgsql",
-    "table.include.list": "public.accounts,public.listings_*,public.listing_variations_*",
+    "schema.include.list": "public",
     "producer.override.max.request.size": "10485760",
     "producer.override.buffer.memory": "12485760"
   }'
@@ -48,7 +48,7 @@ curl -X PUT http://34.32.138.63:8083/connectors/pgsql-connector/config -H "Conte
 
 ### 删除
 ```shell
-curl -X DELETE http://localhost:8083/connectors/pgsql-connector
+curl -X DELETE http://34.32.138.63:8083/connectors/pgsql-connector
 ```
 
 ### 查看connector状态:
