@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: debezium-data-sync
+spec:
+  type: LoadBalancer  # 网页6推荐的对外暴露方式
+  selector:
+    app: debezium-data-sync  # 必须匹配Deployment的Pod标签[1,8](@ref)
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080  # 对应容器端口[6](@ref)

@@ -1,5 +1,5 @@
 kafka:
-  replicaCount: 5
+  replicaCount: 12
   global:
     storageClass: "ssd"
   heapOpts: -Xms4096m -Xmx4096m
@@ -7,9 +7,12 @@ kafka:
   maxMessageBytes: _10485760
   socketRequestMaxBytes: _104857600
   defaultReplicationFactor: 2
-  numPartitions: 3
+  numPartitions: 2
 
 kafka-ui:
+  service:
+    type: LoadBalancer
+    port: 8080
   yamlApplicationConfig:
     kafka:
       clusters:

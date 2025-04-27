@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-data-sync
+  labels:
+    app: debezium-data-sync
+spec:
+  replicas: 15
+  selector:
+    matchLabels:
+      app: debezium-data-sync
+  template:
+    metadata:
+      labels:
+        app: debezium-data-sync
+    spec:
+      containers:
+        - name: debezium-data-sync
+          image: gcr.io/ebay-mag/ebaymag-gcp-ebay-data-sync:1.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "2048Mi"
+            limits:
+              cpu: "400m"
+              memory: "4086Mi"

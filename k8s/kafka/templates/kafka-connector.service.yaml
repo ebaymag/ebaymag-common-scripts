@@ -5,6 +5,7 @@ metadata:
 spec:
   selector:
     app: kafka-connect
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8083

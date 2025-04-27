@@ -3,7 +3,7 @@
 ## 新注册connector
 
 ```shell
-curl -X POST http://localhost:8083/connectors -H "Content-Type: application/json" -d '{
+curl -X POST http://34.32.138.63:8083/connectors -H "Content-Type: application/json" -d '{
   "name": "pgsql-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
@@ -11,14 +11,14 @@ curl -X POST http://localhost:8083/connectors -H "Content-Type: application/json
     "database.port": "5432",
     "database.user": "cdc",
     "database.password": "cdc",
-    "snapshot.mode": "never",
+    "snapshot.mode": "initial",
     "database.dbname": "ebaymag_production",
     "database.server.name": "debezium.pgsql",
     "slot.name": "debezium_slot",
     "plugin.name": "pgoutput",
     "tasks.max": "10",
     "topic.prefix": "debezium.pgsql",
-    "schema.include.list": "public",
+    "table.include.list": "public.accounts",
     "producer.override.max.request.size": "10485760",
     "producer.override.buffer.memory": "12485760"
   }
