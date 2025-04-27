@@ -16,7 +16,7 @@ curl -X POST http://localhost:8083/connectors -H "Content-Type: application/json
     "database.server.name": "debezium.pgsql",
     "slot.name": "debezium_slot",
     "plugin.name": "pgoutput",
-    "tasks.max": "2",
+    "tasks.max": "10",
     "topic.prefix": "debezium.pgsql",
     "schema.include.list": "public",
     "producer.override.max.request.size": "10485760",
