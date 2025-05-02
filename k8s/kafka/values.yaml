@@ -3,11 +3,17 @@ kafka:
   global:
     storageClass: "ssd"
   heapOpts: -Xms4096m -Xmx4096m
-  logRetentionBytes: _303741824002
+#  logRetentionBytes: _30374182400
   maxMessageBytes: _10485760
   socketRequestMaxBytes: _104857600
-  defaultReplicationFactor: 2
+  defaultReplicationFactor: 3
+  offsetsTopicReplicationFactor: 3
+  transactionStateLogReplicationFactor: 3
+  provisioning:
+    replicationFactor: 3
   numPartitions: 2
+  persistence:
+    size: 500Gi
 
 kafka-ui:
   service:

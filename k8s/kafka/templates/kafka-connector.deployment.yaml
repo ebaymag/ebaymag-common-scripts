@@ -5,7 +5,7 @@ metadata:
   labels:
     app: kafka-connect
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: kafka-connect
@@ -37,11 +37,17 @@ spec:
             - name: GROUP_ID
               value: "connect-cluster"     # 集群唯一标识[6](@ref)
             - name: CONFIG_STORAGE_TOPIC
-              value: "connect-configs"     # 配置存储Topic[3](@ref)
+              value: "connect-configs"
+            - name: KAFKA_CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "3"
             - name: OFFSET_STORAGE_TOPIC
-              value: "connect-offsets"     # 偏移量存储Topic[1](@ref)
+              value: "connect-offsets"
+            - name: KAFKA_CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "3"
             - name: STATUS_STORAGE_TOPIC
-              value: "connect-statuses"   # 状态存储Topic[5](@ref)
+              value: "connect-statuses"
+            - name: KAFKA_CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "3"
             - name: CONNECT_KEY_CONVERTER
               value: "org.apache.kafka.connect.json.JsonConverter"
             - name: CONNECT_VALUE_CONVERTER
@@ -53,11 +59,11 @@ spec:
               mountPath: /plugins
           resources:
             requests:
-              cpu: "500m"
-              memory: "1Gi"
-            limits:
-              cpu: "2"
+              cpu: "1000m"
               memory: "2Gi"
+            limits:
+              cpu: "4"
+              memory: "4Gi"
           readinessProbe:
             httpGet:
               path: /connectors
