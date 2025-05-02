@@ -1,5 +1,5 @@
 kafka:
-  replicaCount: 12
+  replicaCount: 30
   global:
     storageClass: "ssd"
   heapOpts: -Xms4096m -Xmx4096m
