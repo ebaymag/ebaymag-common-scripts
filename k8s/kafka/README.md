@@ -27,12 +27,15 @@ curl -X POST http://34.91.208.145:8083/connectors -H "Content-Type: application/
     "offset.flush.interval.ms": "5000",
     "offset.storage.replication.factor": "3",
     "heartbeat.interval.ms": 1000,
-    "snapshot.max.threads": 10,
+    "snapshot.max.threads": 2,
     "event.processing.failure.handling.mode": "skip",
     "database.tcpKeepAlive": "true",
     "database.sslmode": "disable",
-    "max.queue.size": "4000",
-    "max.batch.size": "1000"
+    "max.queue.size": "10000",
+    "max.batch.size": "500",
+    "task.max": "2",
+    "snapshot.fetch.size": "1024",
+    "poll.interval.ms": "50"
   }
 }'
 ```
@@ -114,8 +117,15 @@ curl -X PUT http://34.91.208.145:8083/connectors/pgsql-connector/config -H "Cont
     "offset.flush.interval.ms": "5000",
     "offset.storage.replication.factor": "3",
     "heartbeat.interval.ms": 1000,
-    "snapshot.max.threads": 10,
-    "event.processing.failure.handling.mode": "skip"
+    "snapshot.max.threads": 2,
+    "event.processing.failure.handling.mode": "skip",
+    "database.tcpKeepAlive": "true",
+    "database.sslmode": "disable",
+    "max.queue.size": "10000",
+    "max.batch.size": "500",
+    "task.max": "2",
+    "snapshot.fetch.size": "1024",
+    "poll.interval.ms": "50"
   }'
 ```
 

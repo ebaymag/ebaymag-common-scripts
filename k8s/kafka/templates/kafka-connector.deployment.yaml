@@ -32,6 +32,8 @@ spec:
           ports:
             - containerPort: 8083
           env:
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xms4096m -Xmx6096m"
             - name: BOOTSTRAP_SERVERS
               value: "kafka:9092"
             - name: GROUP_ID
