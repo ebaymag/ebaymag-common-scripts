@@ -17,3 +17,5 @@ kubectl scale deployment sidekiq-jp -n ebaymag --replicas=0
 kubectl scale deployment sidekiq-jp -n ebaymag --replicas=10
 kubectl scale deployment sidekiq-others -n ebaymag --replicas=0
 kubectl scale deployment sidekiq-others -n ebaymag --replicas=10
+kubectl scale deployment sidekiq-publish-his  -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-publish-his  -n ebaymag --replicas=10

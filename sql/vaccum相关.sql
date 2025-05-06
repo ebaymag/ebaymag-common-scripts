@@ -95,7 +95,6 @@ join pg_stat_activity b2 on b1.pid=b2.pid
 where not w1.granted;
 
 --查死锁
---查死锁
 WITH RECURSIVE
     c(requested, current) AS
         ( VALUES

@@ -1,0 +1,22 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for deploying pgsql and related pgbouncer in pod
+name: pgbouncer_pgsql
+version: 0.0.1
+sources:
+  - https://github.com/evilmartians/ebay-mag-2
+keywords:
+  - ebaymag
+  - pgsql
+maintainers:
+  - name: Biao
+    email: biluo@ebay.com
+dependencies:
+  - name: postgresql
+    condition: postgresql.enabled
+    version: 10.2.5
+    repository: https://charts.bitnami.com/bitnami
+  - name: pgbouncer
+    condition: pgbouncer.enabled
+    version: 0.2.0
+    repository: https://ebaymag.github.io/helm-charts
