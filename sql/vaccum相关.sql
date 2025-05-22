@@ -16,6 +16,7 @@ vacuum verbose analyze product_variations;
 vacuum verbose analyze problems;
 vacuum verbose analyze images;
 vacuum verbose analyze accounts;
+vacuum verbose analyze users;
 vacuum verbose analyze shipping_profiles;
 vacuum verbose analyze shipping_ebay_profiles;
 vacuum verbose analyze orders;

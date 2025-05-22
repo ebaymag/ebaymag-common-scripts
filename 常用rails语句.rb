@@ -25,10 +25,10 @@ Publishing.refresh(Listing.find_by_id(l))
 Preparation::SuggestCategories.call(Listing.find_by_id(l),limit: 1,auto_select: true,)
 # 更新original
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_id(l),sync_quantities: true,sync_content: true,**{},)
-Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(326142842634),sync_quantities: true,sync_content: true,**{},)
+Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(365535165941),sync_quantities: true,sync_content: true,**{},)
 
 # 导入某个item
-ProductImport::Load.call(item_id:326142842634, site_ids: [0], account:  Account.find_by_name('zhuhjshanghai'), data_source: "from_ebay",)
+ProductImport::Load.call(item_id:226751622549, site_ids: [0], account:  Account.find_by_name('zhuhjshanghai'), data_source: "from_ebay",)
 
 
 Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
@@ -38,6 +38,7 @@ Shipping::PublishEbayProfile.call(record:Shipping::EbayProfile.find_by_id(id))
 Shipping::PublishEbayProfile.call(record:Listing.find_by_id(l).ebay_profile('fulfillment'))
 
 item = Ebay::GetItem.call(Listing.find_by_id(l).account, Listing.find_by_id(l).site_id, [Listing.find_by_id(l).item_id])
+item = Ebay::GetItem.call(Account.find_by_name('zhuhjshanghai'), 0, ['226667138302'])
 
 # 获取policy
 BusinessPolicies.get(account: account, site_id: site_id, ebay_id: ebay_id, kind: kind,)
@@ -120,14 +121,15 @@ Sidekiq::Queue.new("op_ecm_publishing").pause;
 Sidekiq::Queue.new("op_ecm_publishing_user").pause;
 Sidekiq::Queue.new("op_others_publishing").pause;
 Sidekiq::Queue.new("op_others_publishing_user").pause;
-
+Sidekiq::Queue.new("imports_prepare").pause;
+Sidekiq::Queue.new("_cleaning_save_worker").pause;
 
 # 队列暂停一段时间
 Sidekiq::Queue["_cleaning"].pause_for_ms(1000 * 60 * 30) # for 30 minutes
 
 #分布式锁的删除
-RedisMutex.new('Product[4160,148214]').unlock!(force:true)
-RedisMutex.new('Product[4160,148214]').lock!(force:true)
+RedisMutex.new('ProductImport::LoadWorker:523365').unlock!(force:true)
+RedisMutex.new('ProductImport::LoadWorker:523365').lock!(force:true)
 
 # 删除account
 Account::Drop.call(account)
@@ -142,6 +144,7 @@ Listing.find_by_id(l).source.listings.pluck(:id,:managed,:item_id,:historical_it
 Product.find_by_id(id).listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:created_at,:updated_at,:start_time,:end_time,:publication_url)
 
 Product.find_by_id(id).listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:updated_at,:start_time,:end_time,)
+Listing.find_by_item_id(item_id).source.listings.pluck(:id,:managed,:item_id,:historical_item_ids,:site_id,:selected_at,:created_at,:updated_at,:start_time,:end_time,:publication_url,:sync_to_internal)
 
 # 通过ebaymag页面上的ebaymag number差order
 Parcel.find_by_id(id).orders
