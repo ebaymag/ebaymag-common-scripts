@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: debezium-data-sync
+spec:
+  minAvailable: 5  # 网页未直接提及，但符合K8s官方标准
+  selector:
+    matchLabels:
+      app: debezium-data-sync  # 匹配Deployment标签

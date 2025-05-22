@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connect-cluster
+  labels:
+    app: kafka-connect
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kafka-connect
+  template:
+    metadata:
+      labels:
+        app: kafka-connect
+    spec:
+      initContainers:
+        - name: download-connectors
+          image: alpine:3.18
+          command:
+            - sh
+            - -c
+            - |
+              wget -O /plugins/debezium-postgres.tar.gz https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.5.0.Final/debezium-connector-postgres-2.5.0.Final-plugin.tar.gz
+              tar -xzf /plugins/debezium-postgres.tar.gz -C /plugins
+          volumeMounts:
+            - name: connector-plugins
+              mountPath: /plugins
+      containers:
+        - name: kafka-connect
+          image: quay.io/debezium/connect:2.5.0.Final
+          ports:
+            - containerPort: 8083
+          env:
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xms4096m -Xmx6096m"
+            - name: BOOTSTRAP_SERVERS
+              value: "kafka:9092"
+            - name: GROUP_ID
+              value: "connect-cluster"     # 集群唯一标识[6](@ref)
+            - name: CONFIG_STORAGE_TOPIC
+              value: "debezium-connect-configs"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "10"
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "10"
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "10"
+            - name: OFFSET_STORAGE_TOPIC
+              value: "debezium-connect-offsets"
+            - name: STATUS_STORAGE_TOPIC
+              value: "debezium-connect-statuses"
+            - name: CONNECT_KEY_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_PLUGIN_PATH
+              value: "/plugins"
+          volumeMounts:
+            - name: connector-plugins
+              mountPath: /plugins
+          resources:
+            requests:
+              cpu: "2000m"
+              memory: "6Gi"
+            limits:
+              cpu: "2000m"
+              memory: "6Gi"
+          readinessProbe:
+            httpGet:
+              path: /connectors
+              port: 8083
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /connectors
+              port: 8083
+            initialDelaySeconds: 30
+            periodSeconds: 60
+      volumes:
+        - name: connector-plugins
+          emptyDir: {}

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-ui
+  labels:
+    app: debezium-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: debezium-ui
+  template:
+    metadata:
+      labels:
+        app: debezium-ui
+    spec:
+      containers:
+        - name: debezium-ui
+          image: debezium/debezium-ui:1.9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KAFKA_CONNECT_URIS
+              value: http://34.91.208.145:8083
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "2048Mi"
+            limits:
+              cpu: "400m"
+              memory: "4086Mi"
