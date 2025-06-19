@@ -91,30 +91,22 @@ Sidekiq::Queue.new('0_events_important').size
 
 
 # 队列暂停和重启
-Sidekiq::Queue.new("schedule").unpause;
 Sidekiq::Queue.new("schedule").pause;
-Sidekiq::Queue.new("_cleaning").unpause;
 Sidekiq::Queue.new("_cleaning").pause;
 Sidekiq::Queue.new("_retry_worker").pause;
-Sidekiq::Queue.new("_retry_worker").unpause;
 Sidekiq::Queue.new("_events_fast").pause;
-Sidekiq::Queue.new("_events_fast").unpause;
-Sidekiq::Queue.new("google_analytics").unpause;
+Sidekiq::Queue.new("_ebay_sync_fast").pause;
 Sidekiq::Queue.new("google_analytics").pause;
-Sidekiq::Queue.new("_events_ebaymagapi").unpause;
 Sidekiq::Queue.new("_events_ebaymagapi").pause;
 Sidekiq::Queue.new("imports").pause;
-Sidekiq::Queue.new("imports").unpause;
 Sidekiq::Queue.new("manual_publishing").pause;
-Sidekiq::Queue.new("manual_publishing").unpause;
 Sidekiq::Queue.new("events_ended").pause;
-Sidekiq::Queue.new("events_ended").unpause;
 Sidekiq::Queue.new("mailing").pause;
 Sidekiq::Queue.new("snapshots").pause;
 Sidekiq::Queue.new("inventory_others_main").pause;
 Sidekiq::Queue.new("0_events_important").pause;
 Sidekiq::Queue.new("_events_ebaymagapi_item_mapping").pause;
-Sidekiq::Queue.new("_events_ebaymagapi_item_mapping").unpause;
+Sidekiq::Queue.new("_events_ebaymagapi_new_item_mapping").pause;
 Sidekiq::Queue.new("op_his_publishing").pause;
 Sidekiq::Queue.new("op_his_publishing_user").pause;
 Sidekiq::Queue.new("op_ecm_publishing").pause;
@@ -122,14 +114,16 @@ Sidekiq::Queue.new("op_ecm_publishing_user").pause;
 Sidekiq::Queue.new("op_others_publishing").pause;
 Sidekiq::Queue.new("op_others_publishing_user").pause;
 Sidekiq::Queue.new("imports_prepare").pause;
+Sidekiq::Queue.new("imports_load").pause;
 Sidekiq::Queue.new("_cleaning_save_worker").pause;
+Sidekiq::Queue.new("mass_edit").pause;
 
 # 队列暂停一段时间
 Sidekiq::Queue["_cleaning"].pause_for_ms(1000 * 60 * 30) # for 30 minutes
 
 #分布式锁的删除
-RedisMutex.new('ProductImport::LoadWorker:523365').unlock!(force:true)
-RedisMutex.new('ProductImport::LoadWorker:523365').lock!(force:true)
+RedisMutex.new('Shipping::PublishEbayProfile[297-85-return]').unlock!(force:true)
+RedisMutex.new('Publishing[148844]').lock!(force:true)
 
 # 删除account
 Account::Drop.call(account)

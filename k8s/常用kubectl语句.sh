@@ -19,3 +19,6 @@ kubectl scale deployment sidekiq-others -n ebaymag --replicas=0
 kubectl scale deployment sidekiq-others -n ebaymag --replicas=10
 kubectl scale deployment sidekiq-publish-his  -n ebaymag --replicas=0
 kubectl scale deployment sidekiq-publish-his  -n ebaymag --replicas=10
+kubectl scale deployment sidekiq-import  -n ebaymag --replicas=0
+kubectl scale deployment sidekiq-import  -n ebaymag --replicas=10
+kubectl scale deployment prometheus-prometheus-operator-kube-p-prometheus-0 -n monitoring --replicas=0

@@ -1,13 +1,13 @@
 1. Query ItemMapping by primary key
-get * from ItemMappings use keys["ItemMappings:PRODUCTION_8910692", "PRODUCTION_8910692"]
+get * from ItemMappings use keys["ItemMappings:PRODUCTION_372023862", "PRODUCTION_372023862"]
 2. Query ItemMapping by original item id
 select * from ItemMappings where itemId="${originalItemId}"
 3. Query Product by primary key
-get * from Products use keys["Products:PRODUCTION_8910692", "PRODUCTION_8910692"]
+get * from Products use keys["Products:PRODUCTION_372023862", "PRODUCTION_372023862"]
 4. Query CrossItem by primary key
 get * from OriginalCrossItems use keys["OriginalCrossItems:${itemId}", "${itemId}"]
 5. Query SellerSetting by primary key
-get * from SellerSettings use keys["SellerSettings:PRODUCTION_75804", "PRODUCTION_75804"]
+get * from SellerSettings use keys["SellerSettings:PRODUCTION_145761", "PRODUCTION_145761"]
 6. Query SyncTasks by primary key
 get * from SyncTasks use keys ["SyncTasks:f7de97c8-72db-4d9d-8565-c742dd019da9:1711656955818", "f7de97c8-72db-4d9d-8565-c742dd019da9:1711656955818"]
 

@@ -12,6 +12,8 @@ vacuum verbose analyze listings;
 vacuum verbose analyze products;
 vacuum verbose analyze listing_variations;
 vacuum verbose analyze product_variations;
+vacuum verbose analyze product_attributes;
+vacuum verbose analyze product_descriptions;
 
 vacuum verbose analyze problems;
 vacuum verbose analyze images;
@@ -64,7 +66,7 @@ select * from (
 -- where time>'00:30:00'
 order by time desc;
 
-select pg_terminate_backend(pid) from(
+select pid,pg_terminate_backend(pid) from(
                   SELECT pid,now()-backend_start as time,usename,datname,client_addr,state,query,backend_start
                   FROM
                       pg_stat_activity

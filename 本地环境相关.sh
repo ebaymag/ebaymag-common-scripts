@@ -35,3 +35,4 @@ bundle exec dotenv -f .circleci/.env \
 rspec --format RspecJunitFormatter --out /tmp/test-results/rspec.xml \
       --format progress \
       $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+

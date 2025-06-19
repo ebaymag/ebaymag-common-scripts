@@ -1,0 +1,6 @@
+kubectl get pods -n ebaymag -o wide| grep redis
+
+redis-cli
+info Replication
+SLAVEOF <master-ip> <master-port>
+SLAVEOF NO ONE
