@@ -117,6 +117,7 @@ Sidekiq::Queue.new("imports_prepare").pause;
 Sidekiq::Queue.new("imports_load").pause;
 Sidekiq::Queue.new("_cleaning_save_worker").pause;
 Sidekiq::Queue.new("mass_edit").pause;
+Sidekiq::Queue.new("shipping_profiles").pause;
 
 # 队列暂停一段时间
 Sidekiq::Queue["_cleaning"].pause_for_ms(1000 * 60 * 30) # for 30 minutes
