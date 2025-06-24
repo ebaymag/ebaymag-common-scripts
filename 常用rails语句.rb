@@ -319,3 +319,16 @@ Redis::Pool.with do |r| r.lrange('publish_without_lock_country_white_list',0,-1)
 # 发布无锁 country 白名单
 Redis::Pool.with do |r| r.lrem('publish_without_lock_country_white_list',1,'CN') end
 
+
+# 开始new shipping profile country 白名单，MY 是国家
+Redis::Pool.with do |r| r.lpush('shipping_profile_country_white_list','CN') end
+Redis::Pool.with do |r| r.lrange('shipping_profile_country_white_list',0,-1) end
+# 关闭ebay translation api白名单
+Redis::Pool.with do |r| r.lrem('shipping_profile_country_white_list',1,'CN') end
+
+# 开始new shipping profile user 白名单，1222 是user_id
+Redis::Pool.with do |r| r.lpush('shipping_profile_user_white_list',1222) end
+Redis::Pool.with do |r| r.lrange('shipping_profile_user_white_list',0,-1) end
+# 关闭ebay translation api白名单
+Redis::Pool.with do |r| r.lrem('shipping_profile_user_white_list',1,1222) end
+
