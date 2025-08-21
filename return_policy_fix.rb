@@ -6,6 +6,7 @@ user = Account.find_by(name: name).user;
 total_not_published_listings = user.listings.not_published.selected.managed.where(site_id:77).size
 user.listings.not_published.selected.managed.where(site_id:77).find_each do |el|
   start_time = Time.now
+  el&.ebay_profile('return')&.update(changed_at:Time.current)
   Publishing.synchronize(el)
   end_time = Time.now
   published_listings_count += 1
