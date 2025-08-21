@@ -18,7 +18,7 @@ user.listings.not_published.selected.managed.where(site_id:77).find_each do |el|
   puts "|----------------------------------"
   puts "| ERRORS COUNT: #{errors_count}"
   puts "|----------------------------------"
-rescue DistributedLock::TimeoutError, Handle::NetworkErrors => e
+rescue StandardError => e
   errors_count += 1
   nil
 end
