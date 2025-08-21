@@ -16,5 +16,10 @@ ViktorSo-ebaymagd-PRD-4e7ff2694-eab65cf0
 
 ebaymagInternal:
 488194
+APPID:NewMarke-ebaymagd-PRD-be1d2d212-8cbcc33a
+RunName:New_Marketplace-NewMarke-ebayma-snfzpop
+DEVID:dd4155f1-0921-4086-aefd-b2f2eb62171e
+CERTID:PRD-e1d2d2125e38-39d9-4081-a256-d9c4
 
 
+https://auth2.ebay.com/oauth2/consents?client_id=NewMarke-ebaymagd-PRD-be1d2d212-8cbcc33a&is_tools=1&redirect_uri=New_Marketplace-NewMarke-ebayma-snfzpop&scope=https%3A%2F%2Fapi.ebay.com%2Foauth%2Fscope%2Febaymag%40partner&state=AUTH%7Cproduction%7C1%7C%2Fmy%2Fauth%2F%3Fenv%3Dproduction%26index%3D1%26auth_type%3Doauth&response_type=code&hd&consentGiven=false

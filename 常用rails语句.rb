@@ -28,7 +28,7 @@ Stock::Sync::UpdateItem.call(listing: Listing.find_by_id(l),sync_quantities: tru
 Stock::Sync::UpdateItem.call(listing: Listing.find_by_item_id(365535165941),sync_quantities: true,sync_content: true,**{},)
 
 # 导入某个item
-ProductImport::Load.call(item_id:226751622549, site_ids: [0], account:  Account.find_by_name('zhuhjshanghai'), data_source: "from_ebay",)
+ProductImport::Load.call(item_id:226602302844, site_ids: [0], account:  Account.find_by_name('zhuhjshanghai'), data_source: "from_ebay",)
 
 
 Publishing::ItemMapper.call(listing: Listing.find_by_id(l))
@@ -52,6 +52,8 @@ Ebaymagapi::SetItemMapping.call(Product.find_by_id(id))
 Ebaymagapi::PollMessage.call(Account.find_by_name('zhuhjshanghai').user)
 Ebaymagapi::DeleteItemMapping.call(id)
 Ebaymagapi::SetSellerSetting.call(user_id)
+
+Translation.translate('Mercedes Benz CPC3 control unit A0034466302, A0034466502, A2C32927202',from:'en',to:'it')
 
 # 下架
 EventStore::HandleWorker.enqueue(Notifications::ItemEndHandler)

@@ -71,7 +71,7 @@ select pid,pg_terminate_backend(pid) from(
                   FROM
                       pg_stat_activity
                   WHERE
-                      state = 'active' and query like '%WHERE "product_import_tasks"."id" = 550624'
+                      state = 'active' --and query like '%WHERE "product_import_tasks"."id" = 550624'
               )a
 where time>'00:30:00';
 

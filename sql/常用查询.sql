@@ -38,3 +38,5 @@ WHERE action = 'publish_flag'
 --   AND created_at BETWEEN '2025-04-12 18:00:00' AND '2025-04-12 19:00:00'
   and created_at >= '2025-04-15 16:00:00'
 GROUP BY hour;
+
+select count(1) from product_import_items;
