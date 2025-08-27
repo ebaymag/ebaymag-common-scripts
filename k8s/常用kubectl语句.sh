@@ -60,4 +60,10 @@ kubectl delete pod prometheus-prometheus-operator-kube-p-prometheus-0 -n monitor
 kubectl get poddisruptionbudgets -n alpha
 
 
+kubectl get pods --field-selector=status.phase!=Running -n ebaymag
+
+kubectl delete pods --field-selector=status.phase!=Running -n ebaymag
+
+kubectl get pods -n ebaymag | grep CrashLoopBackOff | awk '{print $1}' | xargs kubectl delete pod -n ebaymag
+
 

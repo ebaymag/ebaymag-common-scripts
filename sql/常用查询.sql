@@ -40,3 +40,20 @@ WHERE action = 'publish_flag'
 GROUP BY hour;
 
 select count(1) from product_import_items;
+
+-- 订单
+SELECT *,
+       array_position(
+               ARRAY ['ready','not_paid','need_processing','courier_awaiting','drop_off_awaiting','failed_delivery','shipped','delivered']::varchar[],
+               parcels.status) AS sort_order
+FROM parcels
+WHERE parcels.stale IS NULL
+  AND parcels.user_id = 17
+  AND parcels.id IN (SELECT parcels.id
+                     FROM parcels
+                              INNER JOIN parcel_orders ON parcel_orders.parcel_id = parcels.id
+                              INNER JOIN orders ON orders.id = parcel_orders.order_id
+                     WHERE parcels.stale IS NULL
+                       AND orders.placed_at >= '2025-05-27 00:00:00')
+ORDER BY sort_order ASC, id DESC
+    LIMIT 10;
