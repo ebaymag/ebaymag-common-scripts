@@ -57,3 +57,17 @@ WHERE parcels.stale IS NULL
                        AND orders.placed_at >= '2025-05-27 00:00:00')
 ORDER BY sort_order ASC, id DESC
     LIMIT 10;
+
+
+select count(1)total,
+       sum(case when c.uuid is not null then 1 else 0 end) procced_count,
+       sum(case when c.uuid is null then 1 else 0 end) not_procced_count,
+       e.time,
+       e.kind
+from event_store_messages e
+         left outer join event_store_completions c on e.uuid=c.message_uuid
+where e.kind in ('itemPaid','itemSold','productSold','inventoryChanged','orderFetched','itemRevised','itemAffected','itemEnded','productArchived','itemClosed','listingUnselected')
+-- and e.time='2025-09-03 00:00:00'
+group by e.kind,e.time
+order by e.kind,e.time desc
+
