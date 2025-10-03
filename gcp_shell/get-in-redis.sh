@@ -1,0 +1,1 @@
+kubectl exec -it rfr-redis-app-0 -n ebaymag -- /bin/sh

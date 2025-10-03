@@ -1,0 +1,4 @@
+进去redis: redis-cli
+info Replication
+
+slaveof no one
