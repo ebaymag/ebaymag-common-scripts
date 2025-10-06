@@ -55,24 +55,30 @@ select count(1) from
 where l.managed=true and l.item_id is not null;
 
 -- 获取正在运行的连接
--- select pg_terminate_backend(pid) from(
+select pg_terminate_backend(pid)
 select * from (
                   SELECT pid,now()-backend_start as time,usename,datname,client_addr,state,query,backend_start
                   FROM
                       pg_stat_activity
                   WHERE
-                      state = 'active'
+                      state = 'active' and pid != 319
               )a
 -- where time>'00:30:00'
 order by time desc;
+
+select count(1)
+FROM
+    pg_stat_activity
+WHERE
+    state = 'active' limit 10;
 
 select pid,pg_terminate_backend(pid) from(
                   SELECT pid,now()-backend_start as time,usename,datname,client_addr,state,query,backend_start
                   FROM
                       pg_stat_activity
                   WHERE
-                      state = 'active' --and query like '%WHERE "product_import_tasks"."id" = 550624'
-              )a
+                      state = 'active' and pid != 319 and query not like '%select pid,pg_terminate_backend(pid)%'
+              )a;
 where time>'00:30:00';
 
 

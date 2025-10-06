@@ -10,7 +10,7 @@ Account.find_by_name('zhuhjshanghai')
 Account.find_by_name('jiangyi12081')
 
 # 用户生成用户的token
-Ebay::Account::GetSubscription.call(Account.find_by_name(name))
+Ebay::Account::GetSubscription.call(Account.find_by_name('zhuhjshanghai'))
 Ebay::Account::GetSubscription.call(Account.find_by_id(17))
 
 # 检查发布前的准备条件
